@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="8">
+        <meta name="viewport" content="width=device-width", initial-scale="1">
+    </head>
+    <body>
+        <div>
+            <h1>Delivery Tracker 2</h1>
+        </div>
+        <div>
+            <button id="help" type="button">Help</button>
+        </div>
+        <div>
+            <button id="addEntry" type="button">Add Entry</button>
+        </div>
+        <form>
+            <div>
+                <label for="address">Address</label>
+                <input type="text" id="address" required="required" autocomplete="off">
+            </div>
+            <div>
+                <label for="deliveryFee">Delivery Fee:</label>
+                <select name="deliveryFee" id="deliveryFee">
+                    <option value="2.25">$2.25</option>
+                    <option value="4.00">$4.00</option>
+                    <option value="5.00">$5.00</option>
+                    <option value="6.00">$6.00</option>
+                    <option value="7.00">$7.00</option>
+                </select>
+            </div>
+            <div>
+                <label for="orderType">Order Type:</label>
+                <select name="orderType" id="orderType">
+                    <option value="phoneCash">Cash</option>
+                    <option value="phoneCC">Phone CC</option>
+                    <option value="onlineCC">Online CC</option>
+                </select>
+            </div>
+            <div>
+                <label for="cashTip">Cash Tip?</label>
+                <input type="checkbox" id="cashTip" name="cashTip" value="yes">
+            </div>
+            <div>
+                <label for="gratuity">Gratuity:</label>
+                <input type="text" id="gratuity" required="required" autocomplete="off">
+            </div>
+            <div>
+                <label for="orderTotal">Order Total:</label>
+                <input type="text" id="orderTotal" required="required" autocomplete="off">
+            </div>
+            <div>
+                <button id="submit" type="button">Submit</button>
+            </div>
+        </form>
+        <div>
+            <button id="editEntry" type="button">Edit Entry</button>
+        </div>
+        <div>
+            <button id="deleteEntry" type="button">Delete Entry</button>
+        </div>
+        <div>
+            <button id="endNight" type="button">End Night</button>
+        </div>
+    </body>
+</html>
