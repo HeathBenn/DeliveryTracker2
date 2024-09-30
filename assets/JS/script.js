@@ -8,26 +8,23 @@ const orderTotal = document.getElementById('orderTotal');
 const submitButton = document.getElementById('submit');
 
 let stopNumber = 1;
+const deliveries = [];
 
 submitButton.onclick = function() {submitDelivery()};
 
 function submitDelivery(){
-    const newDelivery = new ConstructDelivery(address.value, orderType.value/*, orderTotal, gratuity, deliveryFee*/);
+    const newDelivery = new ConstructDelivery(address.value, orderType.value, orderTotal.value, gratuity.value, deliveryFee.value);
     newDelivery.delivery();
+    console.log(deliveries);
 }
 
-function ConstructDelivery(address, type /*, total, tip, fee*/) {
+function ConstructDelivery(address, type, total, tip, fee) {
     this.address = address;
     this.orderType = type;
-    /*this.orderTotal = total;
+    this.orderTotal = total;
     this.gratuity = tip;
-    this.deliveryFee = fee;*/
-    this.delivery = function() {
-        console.log("Delivery Number: " + stopNumber);
-        console.log("Address: " + this.address);
-        console.log("Order Type: " + this.orderType);
-        /*console.log("Order Total: " + this.orderTotal);
-        console.log("Gratuity: " + this.gratuity);
-        console.log("Fee: " + this.deliveryFee);*/
+    this.deliveryFee = fee;
+    this.delivery = function(){
+        deliveries.push(this);
     };
 }
