@@ -7,12 +7,16 @@ const gratuity = document.getElementById('gratuity');
 const orderTotal = document.getElementById('orderTotal');
 const submitButton = document.getElementById('submit');
 const table = document.getElementById('deliveries');
+const partialCash = document.getElementById('partialCash');
+
 const deliveries = [];
 let stopNumber = 1;
 
+//This stores the delivery object and populates the list of deliveries
 submitButton.onclick = function() {submitDelivery()};
 
-//Gets Hour Minute and AM/PM
+//Gets Hour Minute and AM/PM Not used at moment, 
+//other than to store in array object
 function timeStamp() {
     const time = new Date();
     const hours = time.getHours();
@@ -29,6 +33,22 @@ const formatter = new Intl.NumberFormat('en-US',{
     maximumFractionDigits: 2,
 });
 
+//Resets the table of deliveries
+function resetTable(){
+    table.innerHTML = `
+        <tr>
+            <th>No.</th>
+            <th>Street</th>
+            <th>Type</th>
+            <th>Total</th>
+            <th>Tip</th>
+            <th>Fee</th>
+        </tr>
+    `
+}
+
+
+//Delivery Object Constructor
 function ConstructDelivery(address, type, total, tip, fee) {
     this.stopNumber = stopNumber;
     this.timeLog = timeStamp();
@@ -60,6 +80,12 @@ function ConstructDelivery(address, type, total, tip, fee) {
 function submitDelivery(){
     const newDelivery = new ConstructDelivery(address.value, orderType.value, orderTotal.value, gratuity.value, deliveryFee.value);
     newDelivery.delivery();
-    newDelivery.populate();
+    resetTable();
+    stopNumber = 1;
+    for (let i = 0; i < deliveries.length; i++){
+        deliveries[i].populate();
+    }
+    //newDelivery.populate();
     console.log(deliveries);
+    document.getElementById('deliveryForm').reset(); 
 }

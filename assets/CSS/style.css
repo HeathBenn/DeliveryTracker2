@@ -1,0 +1,13 @@
+ul {
+    list-style-type: none;
+    text-align: left;
+    display: grid;
+    
+    
+}
+
+.thirdColumn{
+    grid-column-start: 3;
+    grid-column-end: 3;
+    text-align: right;
+}
