@@ -11,3 +11,9 @@ ul {
     grid-column-end: 3;
     text-align: right;
 }
+
+.editAlert{
+    color:red;
+    font-size: 14px;
+    font-weight: 900;
+}

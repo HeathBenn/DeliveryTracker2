@@ -6,14 +6,24 @@ const cashTip = document.getElementById('cashTip');
 const gratuity = document.getElementById('gratuity');
 const orderTotal = document.getElementById('orderTotal');
 const submitButton = document.getElementById('submit');
+const deleteButton = document.getElementById('deleteEntry');
+const editButton = document.getElementById('editEntry');
+const endButton = document.getElementById('endNight');
 const table = document.getElementById('deliveries');
 const partialCash = document.getElementById('partialCash');
+
 
 const deliveries = [];
 let stopNumber = 1;
 
 //This stores the delivery object and populates the list of deliveries
 submitButton.onclick = function() {submitDelivery()};
+
+//Currently only resets table
+endButton.onclick  = function() {endNight()}
+
+//calls the function that edits an entry
+editButton.onclick = function() {editEntry()}
 
 //Gets Hour Minute and AM/PM Not used at moment, 
 //other than to store in array object
@@ -85,7 +95,42 @@ function submitDelivery(){
     for (let i = 0; i < deliveries.length; i++){
         deliveries[i].populate();
     }
-    //newDelivery.populate();
     console.log(deliveries);
     document.getElementById('deliveryForm').reset(); 
+}
+
+//currently only resets table
+function endNight(){
+    resetTable();
+}
+
+function editEntry(){
+    Swal.fire({
+        title: 'Which entry would you like to edit?',
+        input: 'text',
+        inputLabel: 'Entry Number',
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return 'You forgot to enter the delivery Number';
+            }
+            for (let i = 0; i < deliveries.length; i++){
+                if (deliveries[i].stopNumber == value){
+                    Swal.fire({
+                        title:'Is this the correct Delivery?',
+                        icon: 'question',
+                        html: `<p class="editAlert">
+                            No: ${deliveries[i].stopNumber} 
+                            Street: ${deliveries[i].address} 
+                            Type: ${deliveries[i].orderType} 
+                            Total: ${deliveries[i].orderTotal} 
+                            Tip: ${deliveries[i].gratuity} 
+                            Fee: ${deliveries[i].deliveryFee}
+                        </p>`
+                    });
+                }
+        }
+        
+        }
+    });
 }
