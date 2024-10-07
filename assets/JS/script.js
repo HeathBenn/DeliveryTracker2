@@ -20,10 +20,13 @@ let stopNumber = 1;
 submitButton.onclick = function() {submitDelivery()};
 
 //Currently only resets table
-endButton.onclick  = function() {endNight()}
+endButton.onclick  = function() {endNight()};
 
 //calls the function that edits an entry
-editButton.onclick = function() {editEntry()}
+editButton.onclick = function() {editEntry()};
+
+//calls the function that deletes an entry
+deleteButton.onclick = function() {deleteEntry()};
 
 //Gets Hour Minute and AM/PM Not used at moment, 
 //other than to store in array object
@@ -104,33 +107,78 @@ function endNight(){
     resetTable();
 }
 
+//currently only gives notification of the delivery you selected to edit
 function editEntry(){
-    Swal.fire({
-        title: 'Which entry would you like to edit?',
-        input: 'text',
-        inputLabel: 'Entry Number',
-        showCancelButton: true,
-        inputValidator: (value) => {
-            if (!value) {
-                return 'You forgot to enter the delivery Number';
-            }
-            for (let i = 0; i < deliveries.length; i++){
-                if (deliveries[i].stopNumber == value){
-                    Swal.fire({
-                        title:'Is this the correct Delivery?',
-                        icon: 'question',
-                        html: `<p class="editAlert">
-                            No: ${deliveries[i].stopNumber} 
-                            Street: ${deliveries[i].address} 
-                            Type: ${deliveries[i].orderType} 
-                            Total: ${deliveries[i].orderTotal} 
-                            Tip: ${deliveries[i].gratuity} 
-                            Fee: ${deliveries[i].deliveryFee}
-                        </p>`
-                    });
+    if (deliveries.length > 0){
+        Swal.fire({
+            title: 'Please enter the number of the delivery to be edited.',
+            input: 'text',
+            inputLabel: 'Entry Number',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You forgot to enter the delivery Number';
                 }
-        }
-        
-        }
-    });
+                for (let i = 0; i < deliveries.length; i++){
+                    if (deliveries[i].stopNumber == value){
+                        Swal.fire({
+                            title:'Is this the correct Delivery?',
+                            icon: 'question',
+                            html: `<p class="editAlert">
+                                No: ${deliveries[i].stopNumber} 
+                                Street: ${deliveries[i].address} 
+                                Total: ${deliveries[i].orderTotal} 
+                                Tip: ${deliveries[i].gratuity} 
+                            </p>`
+                        });
+                    }
+            }
+            
+            }
+        });
+    }
+    else {
+        Swal.fire({
+            title: '<p class="emptyNotification">You do not have any deliveries to edit!</p>'
+        });
+    }
+    
+}
+
+function deleteEntry(){
+    if (deliveries.length > 0){
+        Swal.fire({
+            title: 'Please enter the number of the delivery to be deleted.',
+            input: 'text',
+            inputLabel: 'Entry Number',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You forgot to enter the delivery Number';
+                }
+                for (let i = 0; i < deliveries.length; i++){
+                    if (deliveries[i].stopNumber == value){
+                        Swal.fire({
+                            title:'Is this the correct Delivery?',
+                            showCancelButton: true, 
+                            confirmButtonText: 'Delete',
+                            icon: 'question',
+                            html: `<p class="editAlert">
+                                No: ${deliveries[i].stopNumber} 
+                                Street: ${deliveries[i].address} 
+                                Total: ${deliveries[i].orderTotal} 
+                                Tip: ${deliveries[i].gratuity} 
+                            </p>`
+                        });
+                    }
+            }
+            
+            }
+        });
+    }
+    else{
+        Swal.fire({
+            title: '<p class="emptyNotification">You do not have any deliveries to delete!</p>'
+        });
+    }
 }

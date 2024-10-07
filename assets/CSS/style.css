@@ -6,14 +6,18 @@ ul {
     
 }
 
-.thirdColumn{
+li.thirdColumn{
     grid-column-start: 3;
     grid-column-end: 3;
     text-align: right;
 }
 
-.editAlert{
+p.editAlert{
     color:red;
     font-size: 14px;
     font-weight: 900;
+}
+
+p.emptyNotification {
+    font-size: 20px;
 }
