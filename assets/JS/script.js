@@ -119,8 +119,11 @@ function editEntry(){
                 if (!value) {
                     return 'You forgot to enter the delivery Number';
                 }
+            }
+        }).then((result) =>{
+            if (result.isConfirmed){
                 for (let i = 0; i < deliveries.length; i++){
-                    if (deliveries[i].stopNumber == value){
+                    if (deliveries[i].stopNumber == result.value){
                         Swal.fire({
                             title:'Is this the correct Delivery?',
                             icon: 'question',
@@ -132,8 +135,7 @@ function editEntry(){
                             </p>`
                         });
                     }
-            }
-            
+                }
             }
         });
     }
@@ -156,8 +158,11 @@ function deleteEntry(){
                 if (!value) {
                     return 'You forgot to enter the delivery Number';
                 }
+            }
+        }).then((result) => {
+            if(result.isConfirmed){
                 for (let i = 0; i < deliveries.length; i++){
-                    if (deliveries[i].stopNumber == value){
+                    if (deliveries[i].stopNumber == result.value){
                         Swal.fire({
                             title:'Is this the correct Delivery?',
                             showCancelButton: true, 
@@ -169,10 +174,17 @@ function deleteEntry(){
                                 Total: ${deliveries[i].orderTotal} 
                                 Tip: ${deliveries[i].gratuity} 
                             </p>`
+                        }).then((result) => {
+                            if (result.isConfirmed){
+                                deliveries.splice(deliveries[i], 1);
+                                resetTable();
+                                for (let i = 0; i < deliveries.length; i++){
+                                    deliveries[i].populate();
+                                }
+                            }
                         });
                     }
-            }
-            
+                }
             }
         });
     }
