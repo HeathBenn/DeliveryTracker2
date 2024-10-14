@@ -15,6 +15,7 @@ const partialCash = document.getElementById('partialCash');
 
 const deliveries = [];
 let stopNumber = 1;
+let inputValue = '';
 
 //This stores the delivery object and populates the list of deliveries
 submitButton.onclick = function() {submitDelivery()};
@@ -158,33 +159,44 @@ function deleteEntry(){
                 if (!value) {
                     return 'You forgot to enter the delivery Number';
                 }
+                else {
+                    inputValue = value;
+                }
             }
         }).then((result) => {
             if(result.isConfirmed){
-                for (let i = 0; i < deliveries.length; i++){
-                    if (deliveries[i].stopNumber == result.value){
-                        Swal.fire({
-                            title:'Is this the correct Delivery?',
-                            showCancelButton: true, 
-                            confirmButtonText: 'Delete',
-                            icon: 'question',
-                            html: `<p class="editAlert">
-                                No: ${deliveries[i].stopNumber} 
-                                Street: ${deliveries[i].address} 
-                                Total: ${deliveries[i].orderTotal} 
-                                Tip: ${deliveries[i].gratuity} 
-                            </p>`
-                        }).then((result) => {
-                            if (result.isConfirmed){
-                                deliveries.splice(deliveries[i], 1);
-                                resetTable();
-                                for (let i = 0; i < deliveries.length; i++){
-                                    deliveries[i].populate();
+                if(inputValue > deliveries.length){
+                    Swal.fire({
+                        title: '<p class="emptyNotification">You do not have that many deliveries!</p>'
+                    });
+                }
+                else {
+                    for (let i = 0; i < deliveries.length; i++){
+                        if (deliveries[i].stopNumber == result.value){
+                            Swal.fire({
+                                title:'Is this the correct Delivery?',
+                                showCancelButton: true, 
+                                confirmButtonText: 'Delete',
+                                icon: 'question',
+                                html: `<p class="editAlert">
+                                    No: ${deliveries[i].stopNumber} 
+                                    Street: ${deliveries[i].address} 
+                                    Total: ${deliveries[i].orderTotal} 
+                                    Tip: ${deliveries[i].gratuity} 
+                                </p>`
+                            }).then((result) => {
+                                if (result.isConfirmed){
+                                    deliveries.splice(deliveries[i], 1);
+                                    resetTable();
+                                    for (let i = 0; i < deliveries.length; i++){
+                                        deliveries[i].populate();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
+                inputValue = '';
             }
         });
     }
