@@ -11,11 +11,17 @@ const editButton = document.getElementById('editEntry');
 const endButton = document.getElementById('endNight');
 const table = document.getElementById('deliveries');
 const partialCash = document.getElementById('partialCash');
+const numberPad = document.getElementById('numberPad')
 
-
+//Holds all of the delivery objects
 const deliveries = [];
+//signifies the delivery stop.  Increments with each delivery object
 let stopNumber = 1;
+//This stores the "value" from the sweet alert allowing it to be used in the result
 let inputValue = '';
+//This is a switch to allow the number pad to work with gratuity input and order input.
+// 1 is gratuity, 2 is orderTotal, and 0 is off
+let isNumberInput = 0;
 
 //This stores the delivery object and populates the list of deliveries
 submitButton.onclick = function() {submitDelivery()};
@@ -28,6 +34,43 @@ editButton.onclick = function() {editEntry()};
 
 //calls the function that deletes an entry
 deleteButton.onclick = function() {deleteEntry()};
+
+//Event listener for the order total text input.  Will display numberPad for easy input
+orderTotal.addEventListener("focus", () => {
+    numberPad.style.display = "block";
+    isNumberInput = 2;
+});
+
+//Event listener for the gratuity text input.  Will display numberPad for easy input
+gratuity.addEventListener("focus", () => {
+    numberPad.style.display = "block";
+    isNumberInput = 1;
+});
+
+numberPad.addEventListener("click", (event) => {
+    if (event.target.tagName === "BUTTON"){
+        if (event.target.value === "done"){
+            isNumberInput = 0;
+        }
+
+        if (isNumberInput === 1){
+            if (event.target.value === 'delete'){
+                gratuity.value = gratuity.value.substr(0, gratuity.value.length -1);
+            }
+            else {
+                gratuity.value += event.target.textContent;
+            }
+        }
+        else if (isNumberInput === 2){
+            if(event.target.value === 'delete'){
+                orderTotal.value = orderTotal.value.substr(0, orderTotal.value.length -1);
+            }
+            else {
+                orderTotal.value += event.target.textContent;
+            }
+        }
+    }
+});
 
 //Gets Hour Minute and AM/PM Not used at moment, 
 //other than to store in array object
@@ -206,3 +249,4 @@ function deleteEntry(){
         });
     }
 }
+
