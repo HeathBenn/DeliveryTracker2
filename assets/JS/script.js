@@ -47,6 +47,7 @@ gratuity.addEventListener("focus", () => {
     isNumberInput = 1;
 });
 
+//Event listener for numberPad. It listens for the buttons to be pushed and populates the correct input.
 numberPad.addEventListener("click", (event) => {
     if (event.target.tagName === "BUTTON"){
         if (event.target.value === "done"){
@@ -230,9 +231,13 @@ function deleteEntry(){
                             }).then((result) => {
                                 if (result.isConfirmed){
                                     deliveries.splice(deliveries[i], 1);
+                                    stopNumber = 1;
                                     resetTable();
                                     for (let i = 0; i < deliveries.length; i++){
+                                        deliveries[i].stopNumber = stopNumber
                                         deliveries[i].populate();
+                                        stopNumber ++;
+                                        console.log('deliveries length: ' + deliveries.length);
                                     }
                                 }
                             });
