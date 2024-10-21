@@ -180,9 +180,7 @@ function editEntry(){
                                 Tip: ${deliveries[i].gratuity} 
                             </p>`
                         }).then((result) => {
-                            console.log('pre if statement');
                             if (!result.dismiss){
-                                console.log('after statement');
                                 let editOption = "";
                                 Swal.fire({
                                     title:'Which field would you like to edit?',
@@ -197,14 +195,48 @@ function editEntry(){
                                     inputPlaceholder: 'Select a field to edit',
                                     showCancelButton: true, 
                                 }).then((result) => {
-                                    console.log('result: ' + result.value);
                                     switch (result.value){
                                         case 'street':
-                                            editOption = deliveries[i].address;
+
+                                            Swal.fire ({
+                                                title: 'Please enter the new address.',
+                                                input: 'text', 
+                                                inputLabel: 'Enter the changes to be made',
+                                                showCancelButton: true,
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return 'Your forgot to enter your changes!';
+                                                    }
+                                                }
+        
+                                            }).then((result) => {
+                                                deliveries[i].address = result.value;
+                                                Swal.fire ({
+                                                    title: 'Your changes have been made!'
+                                                });
+                                            });
                                             break;
+
                                         case 'type':
-                                            editOption = deliveries[i].orderType;
+
+                                            Swal.fire ({
+                                                title: 'Please select the new delivery type.',
+                                                input: 'select', 
+                                                inputOptions: {
+                                                    Cash: 'Cash',
+                                                    CC: 'Phone CC',
+                                                    Web: 'Online CC',
+                                                },
+                                                showCancelButton: true,
+                                                inputPlaceholder: 'Delivery Types',
+                                            }).then((result) => {
+                                                deliveries[i].orderType = result.value;
+                                                Swal.fire ({
+                                                    title: 'Your changes have been made!'
+                                                });
+                                            });
                                             break;
+
                                         case 'total':
                                             editOption = deliveries[i].orderTotal;
                                             break;
@@ -215,7 +247,6 @@ function editEntry(){
                                             editOption = deliveries[i].deliveryFee;
                                             break;
                                     }
-                                    console.log(editOption);
                                 });
                                 
                             }
