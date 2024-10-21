@@ -85,7 +85,7 @@ function timeStamp() {
 }
 
 
-//Ensures correct format for dollar amounts
+//Ensures correct format for dollar amounts.  Not used at the moment
 const formatter = new Intl.NumberFormat('en-US',{
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -172,12 +172,53 @@ function editEntry(){
                         Swal.fire({
                             title:'Is this the correct Delivery?',
                             icon: 'question',
+                            showCancelButton: true,
                             html: `<p class="editAlert">
                                 No: ${deliveries[i].stopNumber} 
                                 Street: ${deliveries[i].address} 
                                 Total: ${deliveries[i].orderTotal} 
                                 Tip: ${deliveries[i].gratuity} 
                             </p>`
+                        }).then((result) => {
+                            console.log('pre if statement');
+                            if (!result.dismiss){
+                                console.log('after statement');
+                                let editOption = "";
+                                Swal.fire({
+                                    title:'Which field would you like to edit?',
+                                    input: 'select',
+                                    inputOptions: {
+                                        street: `Street Name: ${deliveries[i].address}`,
+                                        type: `Order Type: ${deliveries[i].orderType}`,
+                                        total: `Order Total: ${deliveries[i].orderTotal}`,
+                                        tip: `Tip Amount: ${deliveries[i].gratuity}`,
+                                        fee: `Fee Amount: ${deliveries[i].deliveryFee}`
+                                    },
+                                    inputPlaceholder: 'Select a field to edit',
+                                    showCancelButton: true, 
+                                }).then((result) => {
+                                    console.log('result: ' + result.value);
+                                    switch (result.value){
+                                        case 'street':
+                                            editOption = deliveries[i].address;
+                                            break;
+                                        case 'type':
+                                            editOption = deliveries[i].orderType;
+                                            break;
+                                        case 'total':
+                                            editOption = deliveries[i].orderTotal;
+                                            break;
+                                        case 'tip':
+                                            editOption = deliveries[i].gratuity;
+                                            break;
+                                        case 'fee':
+                                            editOption = deliveries[i].deliveryFee;
+                                            break;
+                                    }
+                                    console.log(editOption);
+                                });
+                                
+                            }
                         });
                     }
                 }
