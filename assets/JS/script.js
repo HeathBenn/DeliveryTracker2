@@ -73,6 +73,27 @@ numberPad.addEventListener("click", (event) => {
     }
 });
 
+//This function is called whenever the table needs to be repopulated
+function populate() {
+    stopNumber = 1;
+    resetTable();
+    for (let i = 0; i < deliveries.length; i++){
+        let template = `
+        <tr>
+        <td>${stopNumber}</td>
+        <td>${deliveries[i].address}</td>
+        <td>${deliveries[i].orderType}</td>
+        <td>${deliveries[i].orderTotal}</td>
+        <td>${deliveries[i].gratuity}</td>
+        <td>${deliveries[i].deliveryFee}</td>
+        </tr>
+        `
+        table.innerHTML += template;
+        stopNumber ++;
+        console.log('deliveries length: ' + deliveries.length);
+    }
+}
+
 //Gets Hour Minute and AM/PM Not used at moment, 
 //other than to store in array object
 function timeStamp() {
@@ -118,7 +139,7 @@ function ConstructDelivery(address, type, total, tip, fee) {
     this.delivery = function(){
         deliveries.push(this);
     };
-    this.populate = function(){
+    /*this.populate = function(){
         let template = `
         <tr>
         <td>${stopNumber}</td>
@@ -131,18 +152,19 @@ function ConstructDelivery(address, type, total, tip, fee) {
         `
         table.innerHTML += template;
         stopNumber += 1;
-    };
+    };*/
 }
 
 //Submits the delivery info
 function submitDelivery(){
     const newDelivery = new ConstructDelivery(address.value, orderType.value, orderTotal.value, gratuity.value, deliveryFee.value);
     newDelivery.delivery();
-    resetTable();
+    /*resetTable();
     stopNumber = 1;
     for (let i = 0; i < deliveries.length; i++){
         deliveries[i].populate();
-    }
+    }*/
+    populate();
     console.log(deliveries);
     document.getElementById('deliveryForm').reset(); 
 }
@@ -214,6 +236,7 @@ function editEntry(){
                                                 Swal.fire ({
                                                     title: 'Your changes have been made!'
                                                 });
+                                                populate();
                                             });
                                             break;
 
@@ -229,22 +252,101 @@ function editEntry(){
                                                 },
                                                 showCancelButton: true,
                                                 inputPlaceholder: 'Delivery Types',
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return 'Your forgot to enter your changes!';
+                                                    }
+                                                }
                                             }).then((result) => {
                                                 deliveries[i].orderType = result.value;
                                                 Swal.fire ({
                                                     title: 'Your changes have been made!'
                                                 });
+                                                populate();
                                             });
                                             break;
 
                                         case 'total':
-                                            editOption = deliveries[i].orderTotal;
+                                            
+                                            Swal.fire ({
+                                                title: 'Please enter the new total.',
+                                                input: 'text', 
+                                                inputLabel: 'Enter the changes to be made',
+                                                showCancelButton: true,
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return 'Your forgot to enter your changes!';
+                                                    }
+                                                }
+        
+                                            }).then((result) => {
+                                                deliveries[i].orderTotal = result.value;
+                                                Swal.fire ({
+                                                    title: 'Your changes have been made!'
+                                                });
+                                                populate();
+                                            });
                                             break;
                                         case 'tip':
-                                            editOption = deliveries[i].gratuity;
+                                            Swal.fire ({
+                                                title: 'Please enter the new tip amount.',
+                                                input: 'text', 
+                                                inputLabel: 'Enter the changes to be made',
+                                                showCancelButton: true,
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return 'Your forgot to enter your changes!';
+                                                    }
+                                                }
+        
+                                            }).then((result) => {
+                                                deliveries[i].gratuity = result.value;
+                                                Swal.fire ({
+                                                    title: 'Your changes have been made!'
+                                                });
+                                                populate();
+                                            });
                                             break;
                                         case 'fee':
-                                            editOption = deliveries[i].deliveryFee;
+                                            Swal.fire ({
+                                                title: 'Please select the new delivery fee.',
+                                                input: 'select', 
+                                                inputOptions: {
+                                                    twoTwentyFive: '$2.25',
+                                                    four: '$4.00',
+                                                    five: '$5.00',
+                                                    six: '$6.00',
+                                                    seven: '$7.00',
+                                                },
+                                                showCancelButton: true,
+                                                inputPlaceholder: 'Delivery Fees',
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return 'Your forgot to enter your changes!';
+                                                    }
+                                                }
+                                            }).then((result) => {
+
+                                                if (result.value === 'twoTwentyFive'){
+                                                    deliveries[i].deliveryFee = '2.25';
+                                                }
+                                                else if (result.value === 'four'){
+                                                    deliveries[i].deliveryFee = '4.00';
+                                                }
+                                                else if (result.value === 'five'){
+                                                    deliveries[i].deliveryFee = '5.00';
+                                                }
+                                                else if (result.value === 'six'){
+                                                    deliveries[i].deliveryFee = '6.00';
+                                                }
+                                                else {
+                                                    deliveries[i].deliveryFee = '7.00';
+                                                }
+                                                Swal.fire ({
+                                                    title: 'Your changes have been made!'
+                                                });
+                                                populate();
+                                            });
                                             break;
                                     }
                                 });
@@ -252,7 +354,7 @@ function editEntry(){
                             }
                         });
                     }
-                }
+                }    
             }
         });
     }
@@ -304,13 +406,11 @@ function deleteEntry(){
                                 if (result.isConfirmed){
                                     deliveries.splice(deliveries[i], 1);
                                     stopNumber = 1;
-                                    resetTable();
-                                    for (let i = 0; i < deliveries.length; i++){
-                                        deliveries[i].stopNumber = stopNumber
-                                        deliveries[i].populate();
-                                        stopNumber ++;
-                                        console.log('deliveries length: ' + deliveries.length);
+                                    for(let i = 0; i < deliveries.length; i++){
+                                        deliveries[i].stopNumber = stopNumber;
+                                        i++;
                                     }
+                                    populate();
                                 }
                             });
                         }
