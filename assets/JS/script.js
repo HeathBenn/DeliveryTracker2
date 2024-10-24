@@ -11,7 +11,9 @@ const editButton = document.getElementById('editEntry');
 const endButton = document.getElementById('endNight');
 const table = document.getElementById('deliveries');
 const partialCash = document.getElementById('partialCash');
-const numberPad = document.getElementById('numberPad')
+const numberPad = document.getElementById('numberPad');
+const cashBox = document.getElementById('cashTip');
+const partCashBox = document.getElementById('partialCash');
 
 //Holds all of the delivery objects
 const deliveries = [];
@@ -70,6 +72,26 @@ numberPad.addEventListener("click", (event) => {
                 orderTotal.value += event.target.textContent;
             }
         }
+    }
+});
+
+//Event listener for when the cash tip checkbox is checked
+cashBox.addEventListener('change', function(){
+    if (this.checked){
+        console.log("cashBox is checked");
+    }
+    else{
+        console.log('cashbox is not checked');
+    }
+});
+
+//Event listener for when the partial cash tip checkbox is checked
+partCashBox.addEventListener('change', function(){
+    if (this.checked){
+        console.log("partialCashBox is checked");
+    }
+    else{
+        console.log('partialCashbox is not checked');
     }
 });
 
